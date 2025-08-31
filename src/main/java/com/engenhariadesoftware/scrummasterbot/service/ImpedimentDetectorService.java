@@ -3,7 +3,7 @@ package com.engenhariadesoftware.scrummasterbot.service;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
 
 
 @Service
@@ -11,7 +11,7 @@ public class ImpedimentDetectorService {
 
     private  ChatClient chatClient;
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
 
     public ImpedimentDetectorService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -29,6 +29,8 @@ public class ImpedimentDetectorService {
                     .user(fullPrompt)
                     .call()
                     .content();
+
+            logStorageService.salvarLog(response, userInput, "impediment-detector");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");

@@ -11,7 +11,8 @@ public class SprintPlanningService {
 
     private ChatClient chatClient;
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
+
 
     public SprintPlanningService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -30,6 +31,8 @@ public class SprintPlanningService {
                     .user(fullPrompt)
                     .call()
                     .content();
+
+            logStorageService.salvarLog(response, userInput, "sprint-planning");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");

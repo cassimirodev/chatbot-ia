@@ -11,7 +11,7 @@ public class BacklogPrioritizerService {
     
     private  ChatClient chatClient;
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
 
     public BacklogPrioritizerService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -29,6 +29,8 @@ public class BacklogPrioritizerService {
                     .user(fullPrompt)
                     .call()
                     .content();
+
+            logStorageService.salvarLog(response, userInput, "backlog-prioritizer");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");

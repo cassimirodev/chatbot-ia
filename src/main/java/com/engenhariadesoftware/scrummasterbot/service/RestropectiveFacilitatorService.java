@@ -11,7 +11,8 @@ public class RestropectiveFacilitatorService {
 
     private  ChatClient chatClient;
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
+
 
     public RestropectiveFacilitatorService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -29,6 +30,8 @@ public class RestropectiveFacilitatorService {
                     .user(fullPrompt)
                     .call()
                     .content();
+
+            logStorageService.salvarLog(response, userInput, "restrospective-facilitator");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");

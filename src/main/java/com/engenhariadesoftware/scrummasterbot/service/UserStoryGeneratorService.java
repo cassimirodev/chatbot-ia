@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate;
 public class UserStoryGeneratorService {
 
     private ChatClient chatClient;
-
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
+
 
     public UserStoryGeneratorService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -29,6 +29,8 @@ public class UserStoryGeneratorService {
                     .user(fullPrompt)
                     .call()
                     .content();
+
+            logStorageService.salvarLog(response, userInput, "user-story-generator");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");

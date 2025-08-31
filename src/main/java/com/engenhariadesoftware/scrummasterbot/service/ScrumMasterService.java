@@ -11,7 +11,8 @@ public class ScrumMasterService {
 
     private  ChatClient chatClient;
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
+
 
     public ScrumMasterService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -33,6 +34,8 @@ public class ScrumMasterService {
                      .user(fullPrompt)
                      .call()
                      .content();
+
+            logStorageService.salvarLog(response, userInput, "scrum-master");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");

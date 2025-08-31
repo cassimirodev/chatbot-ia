@@ -9,9 +9,8 @@ import org.springframework.web.client.RestTemplate;
 public class VirtualPoService {
 
     private ChatClient chatClient;
-
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
 
     public VirtualPoService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -29,6 +28,8 @@ public class VirtualPoService {
                     .user(fullPrompt)
                     .call()
                     .content();
+
+            logStorageService.salvarLog(response, userInput, "virtual-po");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");

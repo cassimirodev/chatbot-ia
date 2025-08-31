@@ -3,15 +3,16 @@ package com.engenhariadesoftware.scrummasterbot.service;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 
 @Service
 public class KanbanGeneratorService {
 
-    private  ChatClient chatClient;
     @Autowired
-    private RestTemplate restTemplate;
+    LogStorageService logStorageService;
+
+    private  ChatClient chatClient;
+
 
     public KanbanGeneratorService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
@@ -29,6 +30,8 @@ public class KanbanGeneratorService {
                     .user(fullPrompt)
                     .call()
                     .content();
+
+            logStorageService.salvarLog(response, userInput, "kanban-generator");
             return response;
         } catch (Exception e) {
             System.out.println("ERRO!!!!");
